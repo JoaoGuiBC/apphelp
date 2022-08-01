@@ -1,13 +1,55 @@
-import { SignOut } from 'phosphor-react-native';
-import { Heading, HStack, IconButton, Text, useTheme, VStack } from 'native-base';
+import { useState } from 'react';
+import { ChatTeardropText, SignOut } from 'phosphor-react-native';
+import { Center, FlatList, Heading, HStack, IconButton, Text, useTheme, VStack } from 'native-base';
 
 import Logo from '../assets/logo_secondary.svg';
 
 import { Filter } from '../components/Filter';
-import { useState } from 'react';
+import { Button } from '../components/Button';
+import { Order, OrderData } from '../components/Order';
 
 export function Home() {
   const [selectedStatus, setSelectedStatus] = useState<'open' | 'closed'>('open');
+  const [orders, setOrders] = useState<OrderData[]>([
+    
+    {
+      id: '321',
+      patrimony: '46876216',
+      when: '01/08/2022 ás 16:40',
+      status: 'open',
+    },
+    {
+      id: '123',
+      patrimony: '61267864',
+      when: '01/08/2022 ás 16:53',
+      status: 'closed',
+    },
+    {
+      id: '456',
+      patrimony: '46876216',
+      when: '01/08/2022 ás 16:40',
+      status: 'closed',
+    },
+    {
+      id: '654',
+      patrimony: '61267864',
+      when: '01/08/2022 ás 16:53',
+      status: 'closed',
+    },
+    {
+      id: '789',
+      patrimony: '46876216',
+      when: '01/08/2022 ás 16:40',
+      status: 'open',
+    },
+    {
+      id: '987',
+      patrimony: '46876216',
+      when: '01/08/2022 ás 16:40',
+      status: 'open',
+    },
+  
+  ]);
 
   const {colors} = useTheme();
 
@@ -55,6 +97,24 @@ export function Home() {
             onPress={() => setSelectedStatus("closed")}
           />
         </HStack>
+
+        <FlatList
+          data={orders}
+          keyExtractor={order => order.id}
+          renderItem={({item}) => <Order data={item} />}
+          contentContainerStyle={{ paddingBottom: 56 }}
+          ListEmptyComponent={() => (
+            <Center>
+              <ChatTeardropText color={colors.gray[300]} size={40} />
+              <Text color="gray.300" fontSize="xl" mt={6} textAlign="center">
+                Você ainda não possui {'\n'}
+                solicitações {selectedStatus === "open" ? "em andamento" : "finalizadas"}
+              </Text>
+            </Center>
+          )}
+        />
+
+        <Button title="Nova solicitação" />
       </VStack>
     </VStack>
   );
